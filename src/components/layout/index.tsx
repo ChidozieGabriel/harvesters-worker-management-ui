@@ -60,9 +60,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="flex justify-between items-center h-16">
             {/* Logo and Brand */}
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-                <Home className="w-5 h-5 text-white" />
-              </div>
+              <img 
+                src="/logo.svg" 
+                alt="Church CRM Logo" 
+                className="h-8 w-auto"
+                onError={(e) => {
+                  // Fallback to PNG if SVG fails
+                  e.currentTarget.src = '/logo-192.png';
+                }}
+              />
               <div>
                 <h1 className="text-lg font-semibold text-gray-900">Church CRM</h1>
               </div>
@@ -100,7 +106,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </div>
                 <div className="hidden xl:block">
                   <p className="text-sm font-medium text-gray-900">
-                    {user?.email || 'User'}
+                    {user?.firstName && user?.lastName 
+                      ? `${user.firstName} ${user.lastName}` 
+                      : user?.email || 'User'
+                    }
                   </p>
                   <p className="text-xs text-gray-500 capitalize">
                     {user?.role?.toLowerCase() || 'Member'}
@@ -149,9 +158,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {/* Mobile Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-                <Home className="w-5 h-5 text-white" />
-              </div>
+              <img 
+                src="/logo.svg" 
+                alt="Church CRM Logo" 
+                className="h-8 w-auto"
+                onError={(e) => {
+                  // Fallback to PNG if SVG fails
+                  e.currentTarget.src = '/logo-192.png';
+                }}
+              />
               <div>
                 <h1 className="text-lg font-semibold text-gray-900">Church CRM</h1>
                 <p className="text-sm text-gray-500">Worker Management</p>
@@ -175,7 +190,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900 truncate">
-                  {user?.email || 'User'}
+                  {user?.firstName && user?.lastName 
+                    ? `${user.firstName} ${user.lastName}` 
+                    : user?.email || 'User'
+                  }
                 </p>
                 <p className="text-xs text-gray-500 capitalize">
                   {user?.role?.toLowerCase() || 'Member'}
