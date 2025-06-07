@@ -49,7 +49,7 @@ const Logo: React.FC<LogoProps> = ({
             HARVESTERS
           </span>
           <span className={`font-medium ${variant === 'white' ? 'text-gray-200' : 'text-harvesters-600'} ${size === 'sm' ? 'text-xs' : size === 'md' ? 'text-xs' : 'text-sm'} tracking-wide`}>
-            LONDON CAMPUS
+            LONDON
           </span>
         </div>
       )}

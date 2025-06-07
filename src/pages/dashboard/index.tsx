@@ -114,11 +114,6 @@ export default function Dashboard() {
                 <p className="text-sm text-harvesters-600 leading-relaxed">
                   Show this code to mark your attendance at church services and events
                 </p>
-                <div className="pt-2">
-                  <span className="inline-flex items-center px-3 lg:px-4 py-1 lg:py-2 rounded-full text-xs font-medium bg-harvesters-100 text-harvesters-800">
-                    High Contrast • Easily Scannable
-                  </span>
-                </div>
               </div>
             </div>
           </div>
