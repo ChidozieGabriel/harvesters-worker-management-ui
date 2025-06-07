@@ -15,22 +15,70 @@ interface AuthState {
   isAdmin: () => boolean;
 }
 
-export const useAuthStore = create<AuthState>((set, get) => ({
-  token: localStorage.getItem('token'),
-  user: null,
-  setToken: (token: string) => {
-    localStorage.setItem('token', token);
-    const decoded = jwtDecode(token);
-    set({ token, user: decoded as any });
-  },
-  logout: () => {
+// Helper function to initialize user from stored token
+const initializeUserFromToken = () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    return { token: null, user: null };
+  }
+
+  try {
+    const decoded = jwtDecode(token) as any;
+    // Check if token is expired
+    if (decoded.exp && decoded.exp * 1000 < Date.now()) {
+      localStorage.removeItem('token');
+      return { token: null, user: null };
+    }
+    
+    return {
+      token,
+      user: {
+        id: decoded.id,
+        email: decoded.email,
+        role: decoded.role
+      }
+    };
+  } catch (error) {
+    // Token is invalid, remove it
     localStorage.removeItem('token');
-    set({ token: null, user: null });
-  },
-  isAuthenticated: () => {
-    return !!get().token;
-  },
-  isAdmin: () => {
-    return get().user?.role === UserRole.Admin;
-  },
-}));
+    console.warn('Invalid token found in localStorage, removing it');
+    return { token: null, user: null };
+  }
+};
+
+export const useAuthStore = create<AuthState>((set, get) => {
+  const initialState = initializeUserFromToken();
+  
+  return {
+    token: initialState.token,
+    user: initialState.user,
+    setToken: (token: string) => {
+      localStorage.setItem('token', token);
+      try {
+        const decoded = jwtDecode(token) as any;
+        set({ 
+          token, 
+          user: {
+            id: decoded.id,
+            email: decoded.email,
+            role: decoded.role
+          }
+        });
+      } catch (error) {
+        console.error('Failed to decode token:', error);
+        localStorage.removeItem('token');
+        set({ token: null, user: null });
+      }
+    },
+    logout: () => {
+      localStorage.removeItem('token');
+      set({ token: null, user: null });
+    },
+    isAuthenticated: () => {
+      return !!get().token;
+    },
+    isAdmin: () => {
+      return get().user?.role === UserRole.Admin;
+    },
+  };
+});
