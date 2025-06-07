@@ -107,12 +107,14 @@ export interface ResetPasswordRequest {
 // Authentication response types
 export interface LoginResponse {
   token: string;
-  user: {
-    id: string;
-    email: string;
-    role: UserRole;
-    firstName: string;
-    lastName: string;
-    departmentName: string;
-  };
+  user: User;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  role: UserRole;
+  firstName: string;
+  lastName: string;
+  departmentName: string;
 }

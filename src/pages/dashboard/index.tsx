@@ -62,7 +62,7 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">Welcome, {user?.email}</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Welcome, {user?.firstName}</h1>
         <button
           onClick={() => setShowQRCode(!showQRCode)}
           className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"

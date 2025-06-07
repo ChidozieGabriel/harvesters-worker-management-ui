@@ -1,13 +1,13 @@
 import { MockMethod } from 'vite-plugin-mock';
 import {
-  mockWorkers,
-  mockDepartments,
-  mockTeams,
-  mockHabits,
   mockAttendance,
-  mockDevotionals,
   mockDashboardData,
-  mockWorkerDashboardData
+  mockDepartments,
+  mockDevotionals,
+  mockHabits,
+  mockTeams,
+  mockWorkerDashboardData,
+  mockWorkers
 } from './mockData';
 
 // Helper function to generate mock JWT tokens
@@ -27,10 +27,10 @@ function generateMockJwt(payload: any, expiresInSeconds: number = 3600): string 
   // Base64Url encode (simplified for mock)
   const encodedHeader = btoa(JSON.stringify(header)).replace(/[+/]/g, (m) => ({ '+': '-', '/': '_' }[m]!)).replace(/=/g, '');
   const encodedPayload = btoa(JSON.stringify(tokenPayload)).replace(/[+/]/g, (m) => ({ '+': '-', '/': '_' }[m]!)).replace(/=/g, '');
-  
+
   // Mock signature (in real implementation, this would be properly signed)
   const signature = 'mock_signature_' + Date.now();
-  
+
   return `${encodedHeader}.${encodedPayload}.${signature}`;
 }
 
@@ -41,43 +41,23 @@ export default [
     method: 'post',
     response: ({ body }) => {
       console.log('🔧 [MOCK API] POST /api/WorkerAuth/worker-login', body);
-      
+
       // Find worker by email and validate password
       const worker = mockWorkers.find(w => w.email === body.email);
-      
-      if (!worker) {
-        return { error: 'Invalid credentials', status: 401 };
-      }
 
       // Mock password validation (in real app, this would be properly hashed)
       const validPassword = body.password === 'password123';
-      
-      if (!validPassword) {
+
+      if (!worker || !validPassword) {
         return { error: 'Invalid credentials', status: 401 };
       }
 
       // Generate dynamic JWT token with worker information
-      const tokenPayload = {
-        id: worker.id,
-        email: worker.email,
-        role: worker.role,
-        firstName: worker.firstName,
-        lastName: worker.lastName,
-        departmentName: worker.departmentName
-      };
-
-      const token = generateMockJwt(tokenPayload, 3600); // 1 hour expiration
+      const token = generateMockJwt(worker, 3600); // 1 hour expiration
 
       return {
         token,
-        user: {
-          id: worker.id,
-          email: worker.email,
-          role: worker.role,
-          firstName: worker.firstName,
-          lastName: worker.lastName,
-          departmentName: worker.departmentName
-        }
+        user: worker
       };
     },
   },

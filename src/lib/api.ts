@@ -18,13 +18,27 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+const invalidateToken = () => {
+  localStorage.removeItem('token');
+  if (window.location.pathname !== '/login') {
+    window.location.href = '/login';
+  }
+}
+
+
 // Handle auth errors
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    if (response?.data?.status === 401) {
+      invalidateToken()
+      response.status = 401
+      return Promise.reject(response.data);
+    }
+    return response
+  },
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      window.location.href = '/login';
+      invalidateToken()
     }
     return Promise.reject(error);
   }

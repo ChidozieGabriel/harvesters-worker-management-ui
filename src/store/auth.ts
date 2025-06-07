@@ -1,5 +1,6 @@
-import { create } from 'zustand';
 import { jwtDecode } from 'jwt-decode';
+import { create } from 'zustand';
+import { User } from '../services/types';
 import { UserRole } from '../types/api';
 
 interface AuthState {
@@ -17,11 +18,7 @@ interface AuthState {
 
 interface TokenProcessingResult {
   token: string | null;
-  user: {
-    id: string;
-    email: string;
-    role: UserRole;
-  } | null;
+  user: User | null;
 }
 
 // Reusable function to process and validate JWT tokens
@@ -32,20 +29,18 @@ const processToken = (token: string | null): TokenProcessingResult => {
 
   try {
     const decoded = jwtDecode(token) as any;
-    
+
     // Check if token is expired
     if (decoded.exp && decoded.exp * 1000 < Date.now()) {
       localStorage.removeItem('token');
       return { token: null, user: null };
     }
-    
+
+    const user = decoded as User;
+
     return {
       token,
-      user: {
-        id: decoded.id,
-        email: decoded.email,
-        role: decoded.role
-      }
+      user
     };
   } catch (error) {
     // Token is invalid, remove it from localStorage
@@ -63,14 +58,14 @@ const initializeUserFromToken = (): TokenProcessingResult => {
 
 export const useAuthStore = create<AuthState>((set, get) => {
   const initialState = initializeUserFromToken();
-  
+
   return {
     token: initialState.token,
     user: initialState.user,
     setToken: (token: string) => {
       localStorage.setItem('token', token);
       const result = processToken(token);
-      
+
       if (result.token && result.user) {
         set({ token: result.token, user: result.user });
       } else {

@@ -1,8 +1,16 @@
 // Mock data for vite-plugin-mock
-import { Worker, Department, Team, Habit, HabitType, UserRole, Attendance, Devotional } from '../src/types/api';
+import { Attendance, Department, Devotional, Habit, HabitType, Team, UserRole, Worker } from '../src/types/api';
 
 // Mock Workers
 export const mockWorkers: Worker[] = [
+  {
+    id: '550e8400-e29b-41d4-a716-446655440000',
+    email: 'admin@example.com',
+    role: UserRole.Admin,
+    firstName: 'Admin',
+    lastName: 'Example',
+    departmentName: 'Ministry'
+  },
   {
     id: '550e8400-e29b-41d4-a716-446655440001',
     email: 'john.doe@example.com',
