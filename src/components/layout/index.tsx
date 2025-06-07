@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth';
 import { Menu, X, Home, Users, Briefcase, Building2, Book, Activity, User, LogOut } from 'lucide-react';
+import Logo from '../ui/Logo';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -59,13 +60,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo and Brand */}
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-                <Home className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h1 className="text-lg font-semibold text-gray-900">Church CRM</h1>
-              </div>
+            <div className="flex items-center">
+              <Logo size="sm" className="text-indigo-600" />
             </div>
 
             {/* Desktop Navigation */}
@@ -148,15 +144,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="h-full flex flex-col">
           {/* Mobile Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-                <Home className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h1 className="text-lg font-semibold text-gray-900">Church CRM</h1>
-                <p className="text-sm text-gray-500">Worker Management</p>
-              </div>
-            </div>
+            <Logo size="sm" className="text-indigo-600" />
             
             <button
               className="p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors duration-200"
