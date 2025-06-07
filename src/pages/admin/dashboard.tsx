@@ -107,14 +107,14 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="space-y-12">
-      {/* Header Section with Professional Spacing and Alignment */}
-      <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-8">
-        <div className="space-y-4">
-          <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+    <div className="content-spacing no-horizontal-scroll">
+      {/* Header Section with Responsive Layout */}
+      <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-6 lg:gap-8">
+        <div className="space-y-3 lg:space-y-4 min-w-0 flex-1">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
             Admin Dashboard
           </h1>
-          <p className="text-lg text-harvesters-600 max-w-2xl leading-relaxed">
+          <p className="text-base lg:text-lg text-harvesters-600 leading-relaxed">
             Overview of church activities and management
           </p>
         </div>
@@ -122,55 +122,63 @@ export default function AdminDashboard() {
         <div className="flex-shrink-0">
           <button
             onClick={handleExportReport}
-            className="flex items-center px-8 py-4 bg-harvesters-600 text-white rounded-2xl hover:bg-harvesters-700 transition-all duration-200 shadow-lg hover:shadow-xl font-medium"
+            className="flex items-center button-padding bg-harvesters-600 text-white rounded-xl lg:rounded-2xl hover:bg-harvesters-700 transition-all duration-200 shadow-lg hover:shadow-xl font-medium text-sm lg:text-base whitespace-nowrap"
           >
-            <Download className="w-5 h-5 mr-3" />
-            Export Report
+            <Download className="w-4 h-4 lg:w-5 lg:h-5 mr-2 lg:mr-3 flex-shrink-0" />
+            <span className="truncate">Export Report</span>
           </button>
         </div>
       </div>
 
-      {/* Stats Grid with Consistent Spacing */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      {/* Stats Grid with Responsive Layout */}
+      <div className="grid-responsive grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
           <div
             key={stat.name}
-            className="bg-white rounded-3xl shadow-lg border border-harvesters-100 hover:shadow-xl transition-all duration-300 overflow-hidden group"
+            className="bg-white rounded-2xl lg:rounded-3xl shadow-lg border border-harvesters-100 hover:shadow-xl transition-all duration-300 overflow-hidden group"
           >
-            <div className="p-8">
-              <div className="flex items-center space-x-6">
-                <div className={`${stat.color} p-4 rounded-2xl group-hover:scale-105 transition-transform duration-200`}>
-                  <stat.icon className="h-8 w-8 text-white" strokeWidth={2.5} />
+            <div className="card-padding">
+              <div className="flex items-center space-x-4 lg:space-x-6">
+                <div className={`${stat.color} p-3 lg:p-4 rounded-xl lg:rounded-2xl group-hover:scale-105 transition-transform duration-200 flex-shrink-0`}>
+                  <stat.icon className="h-6 w-6 lg:h-8 lg:w-8 text-white" strokeWidth={2.5} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-harvesters-600 uppercase tracking-wider truncate">
+                  <p className="text-xs lg:text-sm font-semibold text-harvesters-600 uppercase tracking-wider truncate">
                     {stat.name}
                   </p>
-                  <p className="text-3xl font-bold text-gray-900 leading-tight">
+                  <p className="text-2xl lg:text-3xl font-bold text-gray-900 leading-tight">
                     {stat.value}
                   </p>
                 </div>
               </div>
             </div>
-            <div className="h-2 bg-gradient-to-r from-harvesters-200 to-harvesters-400"></div>
+            <div className="h-1 lg:h-2 bg-gradient-to-r from-harvesters-200 to-harvesters-400"></div>
           </div>
         ))}
       </div>
 
-      {/* Charts Grid with Professional Layout */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-12">
+      {/* Charts Grid with Responsive Layout */}
+      <div className="grid-responsive grid-cols-1 xl:grid-cols-2">
         {/* Activity Timeline Chart */}
-        <div className="bg-white rounded-3xl shadow-lg border border-harvesters-100">
-          <div className="p-8 border-b border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-900">Activity Timeline</h2>
+        <div className="bg-white rounded-2xl lg:rounded-3xl shadow-lg border border-harvesters-100 no-horizontal-scroll">
+          <div className="card-padding border-b border-gray-100">
+            <h2 className="text-xl lg:text-2xl font-bold text-gray-900">Activity Timeline</h2>
             <p className="text-sm text-harvesters-600 mt-2">
               Daily attendance and habit completion trends
             </p>
           </div>
-          <div className="p-8">
-            <div className="h-96">
+          <div className="card-padding">
+            <div className="h-64 sm:h-80 lg:h-96 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={dashboardData?.activityTimeline || []} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                <BarChart 
+                  data={dashboardData?.activityTimeline || []} 
+                  margin={{ 
+                    top: 20, 
+                    right: 20, 
+                    left: 20, 
+                    bottom: 20 
+                  }}
+                >
                   <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                   <XAxis
                     dataKey="date"
@@ -190,8 +198,8 @@ export default function AdminDashboard() {
                       padding: '16px'
                     }}
                   />
-                  <Bar dataKey="attendance" name="Attendance" fill="#977669" radius={[6, 6, 0, 0]} />
-                  <Bar dataKey="habits" name="Habits" fill="#bfa094" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="attendance" name="Attendance" fill="#977669" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="habits" name="Habits" fill="#bfa094" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -199,15 +207,15 @@ export default function AdminDashboard() {
         </div>
 
         {/* Department Distribution Chart */}
-        <div className="bg-white rounded-3xl shadow-lg border border-harvesters-100">
-          <div className="p-8 border-b border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-900">Department Distribution</h2>
+        <div className="bg-white rounded-2xl lg:rounded-3xl shadow-lg border border-harvesters-100 no-horizontal-scroll">
+          <div className="card-padding border-b border-gray-100">
+            <h2 className="text-xl lg:text-2xl font-bold text-gray-900">Department Distribution</h2>
             <p className="text-sm text-harvesters-600 mt-2">
               Worker distribution across departments
             </p>
           </div>
-          <div className="p-8">
-            <div className="h-96">
+          <div className="card-padding">
+            <div className="h-64 sm:h-80 lg:h-96 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -216,7 +224,7 @@ export default function AdminDashboard() {
                     nameKey="name"
                     cx="50%"
                     cy="50%"
-                    outerRadius={120}
+                    outerRadius={100}
                     label={(entry) => entry.name}
                     labelLine={false}
                   >
