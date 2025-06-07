@@ -15,15 +15,24 @@ interface AuthState {
   isAdmin: () => boolean;
 }
 
-// Helper function to initialize user from stored token
-const initializeUserFromToken = () => {
-  const token = localStorage.getItem('token');
+interface TokenProcessingResult {
+  token: string | null;
+  user: {
+    id: string;
+    email: string;
+    role: UserRole;
+  } | null;
+}
+
+// Reusable function to process and validate JWT tokens
+const processToken = (token: string | null): TokenProcessingResult => {
   if (!token) {
     return { token: null, user: null };
   }
 
   try {
     const decoded = jwtDecode(token) as any;
+    
     // Check if token is expired
     if (decoded.exp && decoded.exp * 1000 < Date.now()) {
       localStorage.removeItem('token');
@@ -39,11 +48,17 @@ const initializeUserFromToken = () => {
       }
     };
   } catch (error) {
-    // Token is invalid, remove it
+    // Token is invalid, remove it from localStorage
     localStorage.removeItem('token');
-    console.warn('Invalid token found in localStorage, removing it');
+    console.warn('Invalid token found, removing it');
     return { token: null, user: null };
   }
+};
+
+// Helper function to initialize user from stored token
+const initializeUserFromToken = (): TokenProcessingResult => {
+  const token = localStorage.getItem('token');
+  return processToken(token);
 };
 
 export const useAuthStore = create<AuthState>((set, get) => {
@@ -54,18 +69,12 @@ export const useAuthStore = create<AuthState>((set, get) => {
     user: initialState.user,
     setToken: (token: string) => {
       localStorage.setItem('token', token);
-      try {
-        const decoded = jwtDecode(token) as any;
-        set({ 
-          token, 
-          user: {
-            id: decoded.id,
-            email: decoded.email,
-            role: decoded.role
-          }
-        });
-      } catch (error) {
-        console.error('Failed to decode token:', error);
+      const result = processToken(token);
+      
+      if (result.token && result.user) {
+        set({ token: result.token, user: result.user });
+      } else {
+        // If processing failed, clear everything
         localStorage.removeItem('token');
         set({ token: null, user: null });
       }
