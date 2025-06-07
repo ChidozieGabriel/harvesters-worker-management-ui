@@ -107,99 +107,138 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="text-harvesters-600 mt-1">Overview of church activities and management</p>
+    <div className="space-y-12">
+      {/* Header Section with Professional Spacing and Alignment */}
+      <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-8">
+        <div className="space-y-4">
+          <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+            Admin Dashboard
+          </h1>
+          <p className="text-lg text-harvesters-600 max-w-2xl leading-relaxed">
+            Overview of church activities and management
+          </p>
         </div>
-        <button
-          onClick={handleExportReport}
-          className="flex items-center px-6 py-3 bg-harvesters-600 text-white rounded-xl hover:bg-harvesters-700 transition-all duration-200 shadow-lg hover:shadow-xl"
-        >
-          <Download className="w-5 h-5 mr-2" />
-          Export Report
-        </button>
+        
+        <div className="flex-shrink-0">
+          <button
+            onClick={handleExportReport}
+            className="flex items-center px-8 py-4 bg-harvesters-600 text-white rounded-2xl hover:bg-harvesters-700 transition-all duration-200 shadow-lg hover:shadow-xl font-medium"
+          >
+            <Download className="w-5 h-5 mr-3" />
+            Export Report
+          </button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Stats Grid with Consistent Spacing */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {stats.map((stat) => (
           <div
             key={stat.name}
-            className="bg-white rounded-2xl shadow-lg p-6 flex items-center space-x-4 border border-harvesters-100 hover:shadow-xl transition-shadow duration-200"
+            className="bg-white rounded-3xl shadow-lg border border-harvesters-100 hover:shadow-xl transition-all duration-300 overflow-hidden group"
           >
-            <div className={`${stat.color} p-3 rounded-xl`}>
-              <stat.icon className="h-6 w-6 text-white" />
+            <div className="p-8">
+              <div className="flex items-center space-x-6">
+                <div className={`${stat.color} p-4 rounded-2xl group-hover:scale-105 transition-transform duration-200`}>
+                  <stat.icon className="h-8 w-8 text-white" strokeWidth={2.5} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-harvesters-600 uppercase tracking-wider truncate">
+                    {stat.name}
+                  </p>
+                  <p className="text-3xl font-bold text-gray-900 leading-tight">
+                    {stat.value}
+                  </p>
+                </div>
+              </div>
             </div>
-            <div>
-              <p className="text-sm font-medium text-harvesters-600">{stat.name}</p>
-              <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-            </div>
+            <div className="h-2 bg-gradient-to-r from-harvesters-200 to-harvesters-400"></div>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-2xl shadow-lg p-6 border border-harvesters-100">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Activity Timeline</h2>
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={dashboardData?.activityTimeline || []}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis
-                  dataKey="date"
-                  tickFormatter={(value) => format(new Date(value), 'MMM d')}
-                  stroke="#6b7280"
-                />
-                <YAxis stroke="#6b7280" />
-                <Tooltip
-                  labelFormatter={(value) => format(new Date(value), 'MMMM d, yyyy')}
-                  contentStyle={{
-                    backgroundColor: 'white',
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '12px',
-                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
-                  }}
-                />
-                <Bar dataKey="attendance" name="Attendance" fill="#977669" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="habits" name="Habits" fill="#bfa094" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+      {/* Charts Grid with Professional Layout */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-12">
+        {/* Activity Timeline Chart */}
+        <div className="bg-white rounded-3xl shadow-lg border border-harvesters-100">
+          <div className="p-8 border-b border-gray-100">
+            <h2 className="text-2xl font-bold text-gray-900">Activity Timeline</h2>
+            <p className="text-sm text-harvesters-600 mt-2">
+              Daily attendance and habit completion trends
+            </p>
+          </div>
+          <div className="p-8">
+            <div className="h-96">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={dashboardData?.activityTimeline || []} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <XAxis
+                    dataKey="date"
+                    tickFormatter={(value) => format(new Date(value), 'MMM d')}
+                    stroke="#6b7280"
+                    fontSize={12}
+                    tickMargin={16}
+                  />
+                  <YAxis stroke="#6b7280" fontSize={12} tickMargin={16} />
+                  <Tooltip
+                    labelFormatter={(value) => format(new Date(value), 'MMMM d, yyyy')}
+                    contentStyle={{
+                      backgroundColor: 'white',
+                      border: '1px solid #e5e7eb',
+                      borderRadius: '16px',
+                      boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+                      padding: '16px'
+                    }}
+                  />
+                  <Bar dataKey="attendance" name="Attendance" fill="#977669" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="habits" name="Habits" fill="#bfa094" radius={[6, 6, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg p-6 border border-harvesters-100">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Department Distribution</h2>
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={dashboardData?.departmentStats || []}
-                  dataKey="count"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={100}
-                  label={(entry) => entry.name}
-                  labelLine={false}
-                >
-                  {dashboardData?.departmentStats.map((_, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: 'white',
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '12px',
-                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
+        {/* Department Distribution Chart */}
+        <div className="bg-white rounded-3xl shadow-lg border border-harvesters-100">
+          <div className="p-8 border-b border-gray-100">
+            <h2 className="text-2xl font-bold text-gray-900">Department Distribution</h2>
+            <p className="text-sm text-harvesters-600 mt-2">
+              Worker distribution across departments
+            </p>
+          </div>
+          <div className="p-8">
+            <div className="h-96">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={dashboardData?.departmentStats || []}
+                    dataKey="count"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={120}
+                    label={(entry) => entry.name}
+                    labelLine={false}
+                  >
+                    {dashboardData?.departmentStats.map((_, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: 'white',
+                      border: '1px solid #e5e7eb',
+                      borderRadius: '16px',
+                      boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+                      padding: '16px'
+                    }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </div>
       </div>

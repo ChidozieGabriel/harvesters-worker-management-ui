@@ -57,7 +57,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-gray-50">
       {/* Desktop Header Navigation */}
       <header className="hidden lg:block bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-8 xl:px-12">
           <div className="flex justify-between items-center h-20">
             {/* Logo and Brand */}
             <div className="flex items-center">
@@ -65,7 +65,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="flex space-x-2">
+            <nav className="flex items-center space-x-3">
               {navigation.map((item) => {
                 const isActive = location.pathname === item.href;
                 return (
@@ -73,15 +73,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     key={item.name}
                     onClick={() => handleNavigate(item.href)}
                     className={`
-                      flex items-center px-5 py-3 text-sm font-medium rounded-xl transition-all duration-200
+                      flex items-center px-6 py-3 text-sm font-medium rounded-xl transition-all duration-200
                       ${isActive 
                         ? 'bg-harvesters-50 text-harvesters-700 border border-harvesters-200 shadow-sm' 
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 hover:shadow-sm'
                       }
                     `}
                     aria-current={isActive ? 'page' : undefined}
                   >
-                    <item.icon className={`mr-2 h-4 w-4 ${isActive ? 'text-harvesters-700' : 'text-gray-400'}`} />
+                    <item.icon className={`mr-3 h-4 w-4 ${isActive ? 'text-harvesters-700' : 'text-gray-400'}`} />
                     {item.name}
                   </button>
                 );
@@ -89,10 +89,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </nav>
 
             {/* User Profile and Logout */}
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-9 h-9 bg-harvesters-100 rounded-full flex items-center justify-center">
-                  <User className="w-4 h-4 text-harvesters-600" />
+            <div className="flex items-center space-x-6">
+              <div className="flex items-center space-x-4">
+                <div className="w-10 h-10 bg-harvesters-100 rounded-full flex items-center justify-center">
+                  <User className="w-5 h-5 text-harvesters-600" />
                 </div>
                 <div className="hidden xl:block">
                   <p className="text-sm font-medium text-gray-900">
@@ -117,7 +117,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Mobile menu button */}
       <button
-        className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-lg text-gray-600 hover:text-gray-900 hover:bg-gray-50 lg:hidden transition-colors duration-200"
+        className="fixed top-6 left-6 z-50 p-3 rounded-xl bg-white shadow-lg text-gray-600 hover:text-gray-900 hover:bg-gray-50 lg:hidden transition-colors duration-200"
         onClick={() => setSidebarOpen(!sidebarOpen)}
         aria-controls="sidebar"
         aria-expanded={sidebarOpen}
@@ -138,12 +138,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Mobile Sidebar */}
       <div className={`
-        fixed inset-y-0 left-0 z-50 w-72 bg-white shadow-xl transform transition-transform duration-300 ease-in-out lg:hidden
+        fixed inset-y-0 left-0 z-50 w-80 bg-white shadow-xl transform transition-transform duration-300 ease-in-out lg:hidden
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
         <div className="h-full flex flex-col">
           {/* Mobile Header */}
-          <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-harvesters-50">
+          <div className="flex items-center justify-between p-8 border-b border-gray-200 bg-harvesters-50">
             <Logo size="sm" className="text-harvesters-700" />
             
             <button
@@ -156,10 +156,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Mobile User info */}
-          <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-harvesters-50 to-harvesters-100">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-harvesters-200 rounded-full flex items-center justify-center">
-                <User className="w-5 h-5 text-harvesters-700" />
+          <div className="p-8 border-b border-gray-200 bg-gradient-to-r from-harvesters-50 to-harvesters-100">
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-harvesters-200 rounded-full flex items-center justify-center">
+                <User className="w-6 h-6 text-harvesters-700" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900 truncate">
@@ -173,7 +173,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Mobile Navigation */}
-          <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+          <nav className="flex-1 px-6 py-8 space-y-3 overflow-y-auto">
             {navigation.map((item) => {
               const isActive = location.pathname === item.href;
               return (
@@ -181,7 +181,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   key={item.name}
                   onClick={() => handleNavigate(item.href)}
                   className={`
-                    flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200
+                    flex items-center w-full px-6 py-4 text-sm font-medium rounded-xl transition-all duration-200
                     ${isActive 
                       ? 'bg-harvesters-50 text-harvesters-700 border-r-2 border-harvesters-700' 
                       : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
@@ -189,7 +189,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   `}
                   aria-current={isActive ? 'page' : undefined}
                 >
-                  <item.icon className={`mr-3 h-5 w-5 ${isActive ? 'text-harvesters-700' : 'text-gray-400'}`} />
+                  <item.icon className={`mr-4 h-5 w-5 ${isActive ? 'text-harvesters-700' : 'text-gray-400'}`} />
                   {item.name}
                 </button>
               );
@@ -197,23 +197,25 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </nav>
 
           {/* Mobile Logout button */}
-          <div className="p-4 border-t border-gray-200">
+          <div className="p-6 border-t border-gray-200">
             <button
               onClick={handleLogout}
-              className="flex items-center w-full px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 rounded-lg transition-all duration-200"
+              className="flex items-center w-full px-6 py-4 text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-200"
             >
-              <LogOut className="mr-3 h-5 w-5" />
+              <LogOut className="mr-4 h-5 w-5" />
               Sign Out
             </button>
           </div>
         </div>
       </div>
 
-      {/* Main content with professional spacing */}
+      {/* Main content with professional spacing and grid system */}
       <div className="lg:pt-0">
-        <main className="px-6 py-6 min-h-screen lg:px-8 lg:py-12 lg:pt-12">
+        <main className="px-6 py-8 min-h-screen lg:px-8 lg:py-16 lg:pt-16">
           <div className="max-w-7xl mx-auto">
-            {children}
+            <div className="space-y-8 lg:space-y-12">
+              {children}
+            </div>
           </div>
         </main>
       </div>
