@@ -7,6 +7,7 @@ export interface CreateWorkerRequest {
   firstName: string;
   lastName: string;
   departmentName: string;
+  password?: string;
 }
 
 export interface UpdateWorkerRequest {
@@ -71,4 +72,47 @@ export interface ReportParams {
   endDate?: string;
   teamName?: string;
   departmentName?: string;
+}
+
+// Authentication request types
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface LogoutRequest {
+  email: string;
+}
+
+export interface PasswordResetRequest {
+  email: string;
+}
+
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface VerifyTokenRequest {
+  email: string;
+  token: string;
+}
+
+export interface ResetPasswordRequest {
+  email: string;
+  token: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+// Authentication response types
+export interface LoginResponse {
+  token: string;
+  user: {
+    id: string;
+    email: string;
+    role: UserRole;
+    firstName: string;
+    lastName: string;
+    departmentName: string;
+  };
 }

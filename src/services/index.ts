@@ -20,8 +20,96 @@ import {
   UpdateHabitRequest,
   MapHabitToWorkerRequest,
   AttendanceRequest,
-  ReportParams
+  ReportParams,
+  LoginRequest,
+  LogoutRequest,
+  PasswordResetRequest,
+  ForgotPasswordRequest,
+  VerifyTokenRequest,
+  ResetPasswordRequest,
+  LoginResponse
 } from './types';
+
+// Authentication API Functions
+
+/**
+ * Authenticates a worker with email and password
+ * @param loginData - Login credentials
+ * @returns Promise<LoginResponse>
+ */
+export const workerLogin = async (loginData: LoginRequest): Promise<LoginResponse> => {
+  try {
+    const response = await api.post('/api/WorkerAuth/worker-login', loginData);
+    return response.data;
+  } catch (error) {
+    throw new Error(`Failed to login: ${error}`);
+  }
+};
+
+/**
+ * Logs out a worker
+ * @param logoutData - Logout request data
+ * @returns Promise<void>
+ */
+export const workerLogout = async (logoutData: LogoutRequest): Promise<void> => {
+  try {
+    await api.post('/api/WorkerAuth/worker-logout', logoutData);
+  } catch (error) {
+    throw new Error(`Failed to logout: ${error}`);
+  }
+};
+
+/**
+ * Requests a password reset for a worker
+ * @param resetData - Password reset request data
+ * @returns Promise<void>
+ */
+export const requestPasswordReset = async (resetData: PasswordResetRequest): Promise<void> => {
+  try {
+    await api.post('/api/WorkerAuth/request-password-reset', resetData);
+  } catch (error) {
+    throw new Error(`Failed to request password reset: ${error}`);
+  }
+};
+
+/**
+ * Initiates forgot password process
+ * @param forgotData - Forgot password request data
+ * @returns Promise<void>
+ */
+export const forgotPassword = async (forgotData: ForgotPasswordRequest): Promise<void> => {
+  try {
+    await api.post('/api/WorkerAuth/forgot-password', forgotData);
+  } catch (error) {
+    throw new Error(`Failed to process forgot password: ${error}`);
+  }
+};
+
+/**
+ * Verifies a reset token
+ * @param verifyData - Token verification data
+ * @returns Promise<void>
+ */
+export const verifyToken = async (verifyData: VerifyTokenRequest): Promise<void> => {
+  try {
+    await api.post('/api/WorkerAuth/verify-token', verifyData);
+  } catch (error) {
+    throw new Error(`Failed to verify token: ${error}`);
+  }
+};
+
+/**
+ * Resets a worker's password
+ * @param resetData - Password reset data
+ * @returns Promise<void>
+ */
+export const resetPassword = async (resetData: ResetPasswordRequest): Promise<void> => {
+  try {
+    await api.post('/api/WorkerAuth/reset-password', resetData);
+  } catch (error) {
+    throw new Error(`Failed to reset password: ${error}`);
+  }
+};
 
 // Admin API Functions
 

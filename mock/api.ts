@@ -11,6 +11,85 @@ import {
 } from './mockData';
 
 export default [
+  // WorkerAuth API endpoints
+  {
+    url: '/api/WorkerAuth/worker-login',
+    method: 'post',
+    response: ({ body }) => {
+      console.log('🔧 [MOCK API] POST /api/WorkerAuth/worker-login', body);
+      
+      // Mock authentication logic
+      if (body.email === 'admin@example.com' && body.password === 'password123') {
+        return {
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4ifQ.8qHvgwYnUKONMQqXqFAqnkJ5F0qzhvWgBdkWqn1Y1_E',
+          user: {
+            id: '550e8400-e29b-41d4-a716-446655440002',
+            email: 'admin@example.com',
+            role: 'Admin',
+            firstName: 'Jane',
+            lastName: 'Smith',
+            departmentName: 'Administration'
+          }
+        };
+      } else if (body.email === 'john.doe@example.com' && body.password === 'password123') {
+        return {
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMSIsImVtYWlsIjoiam9obi5kb2VAZXhhbXBsZS5jb20iLCJyb2xlIjoiV29ya2VyIn0.mockTokenForJohnDoe',
+          user: {
+            id: '550e8400-e29b-41d4-a716-446655440001',
+            email: 'john.doe@example.com',
+            role: 'Worker',
+            firstName: 'John',
+            lastName: 'Doe',
+            departmentName: 'Worship'
+          }
+        };
+      }
+      
+      return { error: 'Invalid credentials', status: 401 };
+    },
+  },
+  {
+    url: '/api/WorkerAuth/worker-logout',
+    method: 'post',
+    response: ({ body }) => {
+      console.log('🔧 [MOCK API] POST /api/WorkerAuth/worker-logout', body);
+      return { success: true, message: 'Logged out successfully' };
+    },
+  },
+  {
+    url: '/api/WorkerAuth/request-password-reset',
+    method: 'post',
+    response: ({ body }) => {
+      console.log('🔧 [MOCK API] POST /api/WorkerAuth/request-password-reset', body);
+      return { success: true, message: 'Password reset email sent' };
+    },
+  },
+  {
+    url: '/api/WorkerAuth/forgot-password',
+    method: 'post',
+    response: ({ body }) => {
+      console.log('🔧 [MOCK API] POST /api/WorkerAuth/forgot-password', body);
+      return { success: true, message: 'Password reset instructions sent' };
+    },
+  },
+  {
+    url: '/api/WorkerAuth/verify-token',
+    method: 'post',
+    response: ({ body }) => {
+      console.log('🔧 [MOCK API] POST /api/WorkerAuth/verify-token', body);
+      // Mock token verification - accept any token for demo
+      return { success: true, valid: true };
+    },
+  },
+  {
+    url: '/api/WorkerAuth/reset-password',
+    method: 'post',
+    response: ({ body }) => {
+      console.log('🔧 [MOCK API] POST /api/WorkerAuth/reset-password', body);
+      return { success: true, message: 'Password reset successfully' };
+    },
+  },
+
   // Admin API endpoints
   {
     url: '/api/Admin/create-worker',
