@@ -7,7 +7,7 @@ import './index.css';
 async function prepare() {
   if (true) {
     const { enableMocking } = await import('./mocks');
-      return Promise.resolve();
+      // return Promise.resolve();
     return enableMocking();
   }
   return Promise.resolve();
