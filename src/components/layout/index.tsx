@@ -61,7 +61,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="flex justify-between items-center h-16">
             {/* Logo and Brand */}
             <div className="flex items-center">
-              <Logo size="sm" className="text-indigo-600" />
+              <Logo size="sm" className="text-harvesters-700" />
             </div>
 
             {/* Desktop Navigation */}
@@ -75,13 +75,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     className={`
                       flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200
                       ${isActive 
-                        ? 'bg-indigo-50 text-indigo-700' 
+                        ? 'bg-harvesters-50 text-harvesters-700 border border-harvesters-200' 
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                       }
                     `}
                     aria-current={isActive ? 'page' : undefined}
                   >
-                    <item.icon className={`mr-2 h-4 w-4 ${isActive ? 'text-indigo-700' : 'text-gray-400'}`} />
+                    <item.icon className={`mr-2 h-4 w-4 ${isActive ? 'text-harvesters-700' : 'text-gray-400'}`} />
                     {item.name}
                   </button>
                 );
@@ -91,14 +91,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {/* User Profile and Logout */}
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-                  <User className="w-4 h-4 text-gray-600" />
+                <div className="w-8 h-8 bg-harvesters-100 rounded-full flex items-center justify-center">
+                  <User className="w-4 h-4 text-harvesters-600" />
                 </div>
                 <div className="hidden xl:block">
                   <p className="text-sm font-medium text-gray-900">
-                    {user?.email || 'User'}
+                    {user?.firstName} {user?.lastName}
                   </p>
-                  <p className="text-xs text-gray-500 capitalize">
+                  <p className="text-xs text-harvesters-600 capitalize">
                     {user?.role?.toLowerCase() || 'Member'}
                   </p>
                 </div>
@@ -143,8 +143,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       `}>
         <div className="h-full flex flex-col">
           {/* Mobile Header */}
-          <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <Logo size="sm" className="text-indigo-600" />
+          <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-harvesters-50">
+            <Logo size="sm" className="text-harvesters-700" />
             
             <button
               className="p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors duration-200"
@@ -156,16 +156,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Mobile User info */}
-          <div className="p-6 border-b border-gray-200">
+          <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-harvesters-50 to-harvesters-100">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                <User className="w-5 h-5 text-gray-600" />
+              <div className="w-10 h-10 bg-harvesters-200 rounded-full flex items-center justify-center">
+                <User className="w-5 h-5 text-harvesters-700" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900 truncate">
-                  {user?.email || 'User'}
+                  {user?.firstName} {user?.lastName}
                 </p>
-                <p className="text-xs text-gray-500 capitalize">
+                <p className="text-xs text-harvesters-600 capitalize">
                   {user?.role?.toLowerCase() || 'Member'}
                 </p>
               </div>
@@ -183,13 +183,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   className={`
                     flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200
                     ${isActive 
-                      ? 'bg-indigo-50 text-indigo-700 border-r-2 border-indigo-700' 
+                      ? 'bg-harvesters-50 text-harvesters-700 border-r-2 border-harvesters-700' 
                       : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                     }
                   `}
                   aria-current={isActive ? 'page' : undefined}
                 >
-                  <item.icon className={`mr-3 h-5 w-5 ${isActive ? 'text-indigo-700' : 'text-gray-400'}`} />
+                  <item.icon className={`mr-3 h-5 w-5 ${isActive ? 'text-harvesters-700' : 'text-gray-400'}`} />
                   {item.name}
                 </button>
               );

@@ -37,7 +37,7 @@ interface AdminDashboardData {
   }[];
 }
 
-const COLORS = ['#4F46E5', '#10B981', '#F59E0B', '#EF4444'];
+const COLORS = ['#977669', '#bfa094', '#d2bab0', '#e0cec7'];
 
 export default function AdminDashboard() {
   const { data: dashboardData, isLoading } = useQuery<AdminDashboardData>({
@@ -54,7 +54,7 @@ export default function AdminDashboard() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-harvesters-500"></div>
       </div>
     );
   }
@@ -64,25 +64,25 @@ export default function AdminDashboard() {
       name: 'Total Workers',
       value: dashboardData?.totalWorkers || 0,
       icon: Users,
-      color: 'bg-indigo-500',
+      color: 'bg-harvesters-600',
     },
     {
       name: 'Departments',
       value: dashboardData?.totalDepartments || 0,
       icon: Building2,
-      color: 'bg-green-500',
+      color: 'bg-harvesters-500',
     },
     {
       name: 'Teams',
       value: dashboardData?.totalTeams || 0,
       icon: Briefcase,
-      color: 'bg-yellow-500',
+      color: 'bg-harvesters-400',
     },
     {
       name: 'Attendance Rate',
       value: `${dashboardData?.attendanceRate || 0}%`,
       icon: TrendingUp,
-      color: 'bg-red-500',
+      color: 'bg-harvesters-700',
     },
   ];
 
@@ -109,10 +109,13 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+          <p className="text-harvesters-600 mt-1">Overview of church activities and management</p>
+        </div>
         <button
           onClick={handleExportReport}
-          className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+          className="flex items-center px-6 py-3 bg-harvesters-600 text-white rounded-xl hover:bg-harvesters-700 transition-all duration-200 shadow-lg hover:shadow-xl"
         >
           <Download className="w-5 h-5 mr-2" />
           Export Report
@@ -123,43 +126,50 @@ export default function AdminDashboard() {
         {stats.map((stat) => (
           <div
             key={stat.name}
-            className="bg-white rounded-lg shadow p-6 flex items-center space-x-4"
+            className="bg-white rounded-2xl shadow-lg p-6 flex items-center space-x-4 border border-harvesters-100 hover:shadow-xl transition-shadow duration-200"
           >
-            <div className={`${stat.color} p-3 rounded-full`}>
+            <div className={`${stat.color} p-3 rounded-xl`}>
               <stat.icon className="h-6 w-6 text-white" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-600">{stat.name}</p>
-              <p className="text-2xl font-semibold text-gray-900">{stat.value}</p>
+              <p className="text-sm font-medium text-harvesters-600">{stat.name}</p>
+              <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
             </div>
           </div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Activity Timeline</h2>
+        <div className="bg-white rounded-2xl shadow-lg p-6 border border-harvesters-100">
+          <h2 className="text-xl font-bold text-gray-900 mb-6">Activity Timeline</h2>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={dashboardData?.activityTimeline || []}>
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                 <XAxis
                   dataKey="date"
                   tickFormatter={(value) => format(new Date(value), 'MMM d')}
+                  stroke="#6b7280"
                 />
-                <YAxis />
+                <YAxis stroke="#6b7280" />
                 <Tooltip
                   labelFormatter={(value) => format(new Date(value), 'MMMM d, yyyy')}
+                  contentStyle={{
+                    backgroundColor: 'white',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '12px',
+                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
+                  }}
                 />
-                <Bar dataKey="attendance" name="Attendance" fill="#4F46E5" />
-                <Bar dataKey="habits" name="Habits" fill="#10B981" />
+                <Bar dataKey="attendance" name="Attendance" fill="#977669" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="habits" name="Habits" fill="#bfa094" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Department Distribution</h2>
+        <div className="bg-white rounded-2xl shadow-lg p-6 border border-harvesters-100">
+          <h2 className="text-xl font-bold text-gray-900 mb-6">Department Distribution</h2>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -171,6 +181,7 @@ export default function AdminDashboard() {
                   cy="50%"
                   outerRadius={100}
                   label={(entry) => entry.name}
+                  labelLine={false}
                 >
                   {dashboardData?.departmentStats.map((_, index) => (
                     <Cell
@@ -179,7 +190,14 @@ export default function AdminDashboard() {
                     />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: 'white',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '12px',
+                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
+                  }}
+                />
               </PieChart>
             </ResponsiveContainer>
           </div>
