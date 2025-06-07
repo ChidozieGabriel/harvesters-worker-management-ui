@@ -10,6 +10,30 @@ import {
   mockWorkerDashboardData
 } from './mockData';
 
+// Helper function to generate mock JWT tokens
+function generateMockJwt(payload: any, expiresInSeconds: number = 3600): string {
+  const header = {
+    alg: 'HS256',
+    typ: 'JWT'
+  };
+
+  const now = Math.floor(Date.now() / 1000);
+  const tokenPayload = {
+    ...payload,
+    iat: now, // issued at
+    exp: now + expiresInSeconds // expires in 1 hour by default
+  };
+
+  // Base64Url encode (simplified for mock)
+  const encodedHeader = btoa(JSON.stringify(header)).replace(/[+/]/g, (m) => ({ '+': '-', '/': '_' }[m]!)).replace(/=/g, '');
+  const encodedPayload = btoa(JSON.stringify(tokenPayload)).replace(/[+/]/g, (m) => ({ '+': '-', '/': '_' }[m]!)).replace(/=/g, '');
+  
+  // Mock signature (in real implementation, this would be properly signed)
+  const signature = 'mock_signature_' + Date.now();
+  
+  return `${encodedHeader}.${encodedPayload}.${signature}`;
+}
+
 export default [
   // WorkerAuth API endpoints
   {
@@ -18,34 +42,43 @@ export default [
     response: ({ body }) => {
       console.log('🔧 [MOCK API] POST /api/WorkerAuth/worker-login', body);
       
-      // Mock authentication logic
-      if (body.email === 'admin@example.com' && body.password === 'password123') {
-        return {
-          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4ifQ.8qHvgwYnUKONMQqXqFAqnkJ5F0qzhvWgBdkWqn1Y1_E',
-          user: {
-            id: '550e8400-e29b-41d4-a716-446655440002',
-            email: 'admin@example.com',
-            role: 'Admin',
-            firstName: 'Jane',
-            lastName: 'Smith',
-            departmentName: 'Administration'
-          }
-        };
-      } else if (body.email === 'john.doe@example.com' && body.password === 'password123') {
-        return {
-          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMSIsImVtYWlsIjoiam9obi5kb2VAZXhhbXBsZS5jb20iLCJyb2xlIjoiV29ya2VyIn0.mockTokenForJohnDoe',
-          user: {
-            id: '550e8400-e29b-41d4-a716-446655440001',
-            email: 'john.doe@example.com',
-            role: 'Worker',
-            firstName: 'John',
-            lastName: 'Doe',
-            departmentName: 'Worship'
-          }
-        };
-      }
+      // Find worker by email and validate password
+      const worker = mockWorkers.find(w => w.email === body.email);
       
-      return { error: 'Invalid credentials', status: 401 };
+      if (!worker) {
+        return { error: 'Invalid credentials', status: 401 };
+      }
+
+      // Mock password validation (in real app, this would be properly hashed)
+      const validPassword = body.password === 'password123';
+      
+      if (!validPassword) {
+        return { error: 'Invalid credentials', status: 401 };
+      }
+
+      // Generate dynamic JWT token with worker information
+      const tokenPayload = {
+        id: worker.id,
+        email: worker.email,
+        role: worker.role,
+        firstName: worker.firstName,
+        lastName: worker.lastName,
+        departmentName: worker.departmentName
+      };
+
+      const token = generateMockJwt(tokenPayload, 3600); // 1 hour expiration
+
+      return {
+        token,
+        user: {
+          id: worker.id,
+          email: worker.email,
+          role: worker.role,
+          firstName: worker.firstName,
+          lastName: worker.lastName,
+          departmentName: worker.departmentName
+        }
+      };
     },
   },
   {
