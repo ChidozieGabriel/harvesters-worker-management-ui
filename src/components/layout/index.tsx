@@ -57,15 +57,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-gray-50">
       {/* Desktop Header Navigation */}
       <header className="hidden lg:block bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
             {/* Logo and Brand */}
             <div className="flex items-center">
               <Logo size="sm" className="text-harvesters-700" />
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="flex space-x-1">
+            <nav className="flex space-x-2">
               {navigation.map((item) => {
                 const isActive = location.pathname === item.href;
                 return (
@@ -73,9 +73,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     key={item.name}
                     onClick={() => handleNavigate(item.href)}
                     className={`
-                      flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200
+                      flex items-center px-5 py-3 text-sm font-medium rounded-xl transition-all duration-200
                       ${isActive 
-                        ? 'bg-harvesters-50 text-harvesters-700 border border-harvesters-200' 
+                        ? 'bg-harvesters-50 text-harvesters-700 border border-harvesters-200 shadow-sm' 
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                       }
                     `}
@@ -91,7 +91,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {/* User Profile and Logout */}
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-harvesters-100 rounded-full flex items-center justify-center">
+                <div className="w-9 h-9 bg-harvesters-100 rounded-full flex items-center justify-center">
                   <User className="w-4 h-4 text-harvesters-600" />
                 </div>
                 <div className="hidden xl:block">
@@ -105,7 +105,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </div>
               <button
                 onClick={handleLogout}
-                className="flex items-center px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 rounded-lg transition-all duration-200"
+                className="flex items-center px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-200"
               >
                 <LogOut className="h-4 w-4" />
                 <span className="ml-2 hidden xl:block">Sign Out</span>
@@ -209,10 +209,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </div>
 
-      {/* Main content */}
+      {/* Main content with professional spacing */}
       <div className="lg:pt-0">
-        <main className="p-6 min-h-screen lg:pt-0">
-          {children}
+        <main className="px-6 py-6 min-h-screen lg:px-8 lg:py-12 lg:pt-12">
+          <div className="max-w-7xl mx-auto">
+            {children}
+          </div>
         </main>
       </div>
     </div>
