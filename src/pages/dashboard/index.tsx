@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { QrCode, Calendar, Users, BookOpen } from 'lucide-react';
-import api from '../../lib/api';
+import { getWorkerDashboard } from '../../services';
 import { useAuthStore } from '../../store/auth';
 import QRCode from 'qrcode.react';
 
@@ -24,9 +24,10 @@ export default function Dashboard() {
   const { data: dashboardData, isLoading } = useQuery<DashboardData>({
     queryKey: ['dashboard', user?.id],
     queryFn: async () => {
-      const response = await api.get(`/api/Dashboard/${user?.id}`);
-      return response.data;
+      if (!user?.id) throw new Error('User ID not available');
+      return await getWorkerDashboard(user.id);
     },
+    enabled: !!user?.id,
   });
 
   if (isLoading) {

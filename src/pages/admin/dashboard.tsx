@@ -19,7 +19,7 @@ import {
   TrendingUp,
   Download,
 } from 'lucide-react';
-import api from '../../lib/api';
+import { getWorkerActivitySummary, exportSummaryReport } from '../../services';
 
 interface AdminDashboardData {
   totalWorkers: number;
@@ -43,14 +43,11 @@ export default function AdminDashboard() {
   const { data: dashboardData, isLoading } = useQuery<AdminDashboardData>({
     queryKey: ['adminDashboard'],
     queryFn: async () => {
-      const response = await api.get('/api/Report/worker-activity-summary', {
-        params: {
-          isAdmin: true,
-          startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-          endDate: new Date().toISOString(),
-        },
+      return await getWorkerActivitySummary({
+        isAdmin: true,
+        startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+        endDate: new Date().toISOString(),
       });
-      return response.data;
     },
   });
 
@@ -91,16 +88,13 @@ export default function AdminDashboard() {
 
   const handleExportReport = async () => {
     try {
-      const response = await api.get('/api/Report/export-summary', {
-        params: {
-          isAdmin: true,
-          startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-          endDate: new Date().toISOString(),
-        },
-        responseType: 'blob',
+      const blob = await exportSummaryReport({
+        isAdmin: true,
+        startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+        endDate: new Date().toISOString(),
       });
 
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
       link.setAttribute('download', `report-${format(new Date(), 'yyyy-MM-dd')}.csv`);
