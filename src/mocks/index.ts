@@ -11,11 +11,11 @@ export async function enableMocking() {
     onUnhandledRequest: 'warn'
   };
 
-  if (!!import.meta.env.VITE_SERVICE_WORKER_URL) {
-    options.serviceWorker = {
-      url: import.meta.env.VITE_SERVICE_WORKER_URL
-    };
-  }
+  // if (!!import.meta.env.VITE_SERVICE_WORKER_URL) {
+  //   options.serviceWorker = {
+  //     url: import.meta.env.VITE_SERVICE_WORKER_URL
+  //   };
+  // }
 
   // `worker.start()` returns a Promise that resolves once the Service Worker is ready
   return worker.start(options);
