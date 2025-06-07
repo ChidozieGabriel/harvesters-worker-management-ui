@@ -3,23 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Church } from 'lucide-react';
 import { useAuthStore } from '../../store/auth';
+import { workerLogin } from '../../services';
 
 interface LoginForm {
   email: string;
   password: string;
 }
-
-// Mock login function - replace with actual API call later
-const mockLogin = async (email: string, password: string) => {
-  // Simulate API call delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
-
-  if (email === 'admin@example.com' && password === 'password123') {
-    return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMzQ1Njc4OTAiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZSI6IkFkbWluIn0.8qHvgwYnUKONMQqXqFAqnkJ5F0qzhvWgBdkWqn1Y1_E';
-  }
-
-  throw new Error('Invalid credentials');
-};
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,8 +23,11 @@ export default function Login() {
     setError('');
 
     try {
-      const token = await mockLogin(data.email, data.password);
-      setToken(token);
+      const response = await workerLogin({
+        email: data.email,
+        password: data.password
+      });
+      setToken(response.token);
       navigate('/dashboard');
     } catch (err) {
       setError('Invalid email or password');
