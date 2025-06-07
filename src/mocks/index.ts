@@ -8,7 +8,8 @@ export async function enableMocking() {
   const { worker } = await import('./browser');
 
   const options: StartOptions = {
-    onUnhandledRequest: 'warn'
+    onUnhandledRequest: 'bypass',
+    
   };
 
   // if (!!import.meta.env.VITE_SERVICE_WORKER_URL) {
