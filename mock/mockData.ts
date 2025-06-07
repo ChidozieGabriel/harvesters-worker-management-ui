@@ -1,5 +1,5 @@
-// Mock data for development environment
-import { Worker, Department, Team, Habit, HabitType, UserRole, Attendance, Devotional } from '../../types/api';
+// Mock data for vite-plugin-mock
+import { Worker, Department, Team, Habit, HabitType, UserRole, Attendance, Devotional } from '../src/types/api';
 
 // Mock Workers
 export const mockWorkers: Worker[] = [
