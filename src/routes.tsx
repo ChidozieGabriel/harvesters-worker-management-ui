@@ -6,8 +6,9 @@ import AdminDashboard from './pages/admin/dashboard';
 import Workers from './pages/admin/workers';
 import Teams from './pages/admin/teams';
 import Departments from './pages/admin/departments';
+import HabitsManagement from './pages/habits';
+import HabitsLogging from './pages/worker/habits-logging';
 import Devotionals from './pages/devotionals';
-import Habits from './pages/habits';
 import Profile from './pages/profile';
 import Layout from './components/layout';
 
@@ -60,15 +61,21 @@ export default function AppRoutes() {
         </PrivateRoute>
       } />
 
-      <Route path="/devotionals" element={
-        <PrivateRoute>
-          <Devotionals />
+      <Route path="/admin/habit-management" element={
+        <PrivateRoute adminOnly>
+          <HabitsManagement />
         </PrivateRoute>
       } />
 
       <Route path="/habits" element={
         <PrivateRoute>
-          <Habits />
+          <HabitsLogging />
+        </PrivateRoute>
+      } />
+
+      <Route path="/devotionals" element={
+        <PrivateRoute>
+          <Devotionals />
         </PrivateRoute>
       } />
 
