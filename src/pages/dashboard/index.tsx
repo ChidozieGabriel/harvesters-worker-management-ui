@@ -185,6 +185,59 @@ export default function Dashboard() {
 
   return (
     <div className="content-spacing no-horizontal-scroll">
+      {/* Header Section with Responsive Layout */}
+      <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-6 lg:gap-8">
+        <div className="space-y-3 lg:space-y-4 min-w-0 flex-1">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight truncate">
+            Welcome back, {user?.firstName}!
+          </h1>
+        </div>
+
+        <div className="flex-shrink-0">
+          <button
+            onClick={() => setShowQRCode(!showQRCode)}
+            className="flex items-center justify-center button-padding bg-harvesters-600 text-white rounded-xl lg:rounded-2xl hover:bg-harvesters-700 transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-harvesters-500 focus:ring-offset-2 font-medium text-sm lg:text-base whitespace-nowrap"
+            aria-label={showQRCode ? 'Hide QR Code' : 'Show QR Code'}
+          >
+            {showQRCode ? <EyeOff className="w-4 h-4 lg:w-5 lg:h-5 mr-2 lg:mr-3 flex-shrink-0" /> : <Eye className="w-4 h-4 lg:w-5 lg:h-5 mr-2 lg:mr-3 flex-shrink-0" />}
+            <span className="truncate">{showQRCode ? 'Hide QR Code' : 'Show QR Code'}</span>
+          </button>
+        </div>
+      </div>
+
+      {/* High-Contrast QR Code Display with Responsive Layout */}
+      {showQRCode && (
+        <div className="flex justify-center py-6 lg:py-8">
+          <div className="bg-white rounded-2xl lg:rounded-3xl shadow-2xl border border-harvesters-200 card-padding max-w-sm w-full mx-4">
+            <div className="text-center space-y-6 lg:space-y-8">
+              <div className="bg-white p-6 lg:p-8 rounded-xl lg:rounded-2xl border-2 border-gray-200 inline-block shadow-inner">
+                <QRCode
+                  value={user?.id || ''}
+                  size={200}
+                  fgColor="#000000"
+                  bgColor="#FFFFFF"
+                  level="H"
+                  includeMargin={false}
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    maxWidth: '200px',
+                    display: 'block'
+                  }}
+                />
+              </div>
+
+              <div className="space-y-3 lg:space-y-4">
+                <h3 className="text-lg lg:text-xl font-bold text-gray-900">Your Attendance QR Code</h3>
+                <p className="text-sm text-harvesters-600 leading-relaxed">
+                  Show this code to mark your attendance at church services and events
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* My Spiritual Habits Section - Prominent at Top */}
       <div className="bg-gradient-to-br from-harvesters-50 via-white to-harvesters-100 rounded-3xl lg:rounded-4xl shadow-2xl border-2 border-harvesters-200 overflow-hidden mb-12 lg:mb-16">
         <div className="card-padding border-b border-harvesters-200 bg-white/80 backdrop-blur-sm">
@@ -197,7 +250,7 @@ export default function Dashboard() {
                 Track your daily spiritual practices and build consistent habits
               </p>
             </div>
-            
+
             {habits.length > 0 && (
               <div className="flex items-center space-x-3 lg:space-x-4 text-sm lg:text-base">
                 <div className="flex items-center space-x-2">
@@ -287,7 +340,7 @@ export default function Dashboard() {
                       </>
                     )}
                   </button>
-                  
+
                   <button
                     onClick={handleCancelCompletion}
                     className="flex items-center justify-center button-padding border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200 font-medium text-sm"
@@ -321,13 +374,13 @@ export default function Dashboard() {
               {habits.map((habit) => {
                 const config = habitTypeConfig[habit.type];
                 const completedToday = isCompletedToday(habit);
-                
+
                 return (
                   <div
                     key={habit.id}
                     className={`bg-white rounded-2xl lg:rounded-3xl shadow-lg border-2 transition-all duration-300 overflow-hidden group hover:shadow-xl
-                      ${completedToday 
-                        ? `${config.borderColor} ${config.bgColor}` 
+                      ${completedToday
+                        ? `${config.borderColor} ${config.bgColor}`
                         : 'border-gray-200 hover:border-harvesters-200'
                       }`}
                   >
@@ -337,7 +390,7 @@ export default function Dashboard() {
                         <div className={`${config.color} p-3 lg:p-4 rounded-xl lg:rounded-2xl text-white group-hover:scale-105 transition-transform duration-200`}>
                           <config.icon className="w-6 h-6 lg:w-7 lg:h-7" />
                         </div>
-                        
+
                         {completedToday && (
                           <div className="flex items-center space-x-2 text-green-600">
                             <CheckCircle className="w-5 h-5" />
@@ -413,63 +466,12 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Header Section with Responsive Layout */}
-      <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-6 lg:gap-8">
-        <div className="space-y-3 lg:space-y-4 min-w-0 flex-1">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight truncate">
-            Welcome back, {user?.firstName}!
-          </h1>
-          <p className="text-base lg:text-lg text-harvesters-600 leading-relaxed">
-            Here's your spiritual journey overview
-          </p>
-        </div>
-        
-        <div className="flex-shrink-0">
-          <button
-            onClick={() => setShowQRCode(!showQRCode)}
-            className="flex items-center justify-center button-padding bg-harvesters-600 text-white rounded-xl lg:rounded-2xl hover:bg-harvesters-700 transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-harvesters-500 focus:ring-offset-2 font-medium text-sm lg:text-base whitespace-nowrap"
-            aria-label={showQRCode ? 'Hide QR Code' : 'Show QR Code'}
-          >
-            {showQRCode ? <EyeOff className="w-4 h-4 lg:w-5 lg:h-5 mr-2 lg:mr-3 flex-shrink-0" /> : <Eye className="w-4 h-4 lg:w-5 lg:h-5 mr-2 lg:mr-3 flex-shrink-0" />}
-            <span className="truncate">{showQRCode ? 'Hide QR Code' : 'Show QR Code'}</span>
-          </button>
-        </div>
-      </div>
 
-      {/* High-Contrast QR Code Display with Responsive Layout */}
-      {showQRCode && (
-        <div className="flex justify-center py-6 lg:py-8">
-          <div className="bg-white rounded-2xl lg:rounded-3xl shadow-2xl border border-harvesters-200 card-padding max-w-sm w-full mx-4">
-            <div className="text-center space-y-6 lg:space-y-8">
-              <div className="bg-white p-6 lg:p-8 rounded-xl lg:rounded-2xl border-2 border-gray-200 inline-block shadow-inner">
-                <QRCode 
-                  value={user?.id || ''} 
-                  size={200}
-                  fgColor="#000000"
-                  bgColor="#FFFFFF"
-                  level="H"
-                  includeMargin={false}
-                  style={{
-                    width: '100%',
-                    height: 'auto',
-                    maxWidth: '200px',
-                    display: 'block'
-                  }}
-                />
-              </div>
-              
-              <div className="space-y-3 lg:space-y-4">
-                <h3 className="text-lg lg:text-xl font-bold text-gray-900">Your Attendance QR Code</h3>
-                <p className="text-sm text-harvesters-600 leading-relaxed">
-                  Show this code to mark your attendance at church services and events
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Enhanced Dashboard Stats with Responsive Grid */}
+      <p className="text-base lg:text-lg text-harvesters-600 leading-relaxed">
+        Here's your spiritual journey overview
+      </p>
       <div className="grid-responsive grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
         {stats.map((stat, index) => (
           <div
@@ -480,14 +482,14 @@ export default function Dashboard() {
               {/* Icon Container with Responsive Spacing */}
               <div className="flex items-center justify-center mb-6 lg:mb-8">
                 <div className={`${stat.color} p-4 lg:p-6 rounded-2xl lg:rounded-3xl shadow-lg group-hover:scale-105 transition-transform duration-200`}>
-                  <stat.icon 
-                    className="h-8 w-8 lg:h-10 lg:w-10 text-white" 
+                  <stat.icon
+                    className="h-8 w-8 lg:h-10 lg:w-10 text-white"
                     strokeWidth={2.5}
                     aria-hidden="true"
                   />
                 </div>
               </div>
-              
+
               {/* Content with Proper Spacing and Alignment */}
               <div className="text-center space-y-3 lg:space-y-4">
                 <h3 className="text-xs lg:text-sm font-semibold text-harvesters-600 uppercase tracking-wider">
@@ -501,7 +503,7 @@ export default function Dashboard() {
                 </p>
               </div>
             </div>
-            
+
             {/* Visual Enhancement */}
             <div className="h-1 lg:h-2 bg-gradient-to-r from-harvesters-200 to-harvesters-400"></div>
           </div>
@@ -518,17 +520,17 @@ export default function Dashboard() {
             </p>
           </div>
         </div>
-        
+
         <div className="card-padding">
           <div className="h-64 sm:h-80 lg:h-96 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart 
-                data={dashboardData?.recentActivity || []} 
-                margin={{ 
-                  top: 20, 
-                  right: 20, 
-                  left: 20, 
-                  bottom: 20 
+              <BarChart
+                data={dashboardData?.recentActivity || []}
+                margin={{
+                  top: 20,
+                  right: 20,
+                  left: 20,
+                  bottom: 20
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -539,7 +541,7 @@ export default function Dashboard() {
                   fontSize={12}
                   tickMargin={16}
                 />
-                <YAxis 
+                <YAxis
                   stroke="#6b7280"
                   fontSize={12}
                   tickMargin={16}
@@ -555,9 +557,9 @@ export default function Dashboard() {
                     padding: '16px'
                   }}
                 />
-                <Bar 
-                  dataKey="count" 
-                  fill="#977669" 
+                <Bar
+                  dataKey="count"
+                  fill="#977669"
                   radius={[8, 8, 0, 0]}
                   name="Activities"
                 />

@@ -5,11 +5,7 @@ import { UserRole } from '../types/api';
 
 interface AuthState {
   token: string | null;
-  user: {
-    id: string;
-    email: string;
-    role: UserRole;
-  } | null;
+  user: User | null;
   setToken: (token: string) => void;
   logout: () => void;
   isAuthenticated: () => boolean;
