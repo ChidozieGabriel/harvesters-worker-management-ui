@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth';
-import { Menu, X, Home, Users, Briefcase, Building2, Book, Activity, User, LogOut, Settings } from 'lucide-react';
+import { Menu, X, Home, Users, Briefcase, Building2, Book, User, LogOut, Settings } from 'lucide-react';
 import Logo from '../ui/Logo';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -19,7 +19,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       { name: 'Habit Management', href: '/admin/habit-management', icon: Settings },
     ] : []),
     { name: 'Devotionals', href: '/devotionals', icon: Book },
-    { name: 'Habits', href: '/habits', icon: Activity },
     { name: 'Profile', href: '/profile', icon: User },
   ];
 
