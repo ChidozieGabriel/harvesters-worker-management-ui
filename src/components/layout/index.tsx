@@ -1,8 +1,27 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Menu as MenuComponent, Disclosure, Transition } from '@headlessui/react';
 import { useAuthStore } from '../../store/auth';
-import { Menu, X, Home, Users, Briefcase, Book, User, LogOut, Settings } from 'lucide-react';
+import { Menu, X, Home, Users, Briefcase, Book, User, LogOut, Settings, ChevronDown, ChevronRight } from 'lucide-react';
 import Logo from '../ui/Logo';
+
+interface NavigationItem {
+  name: string;
+  href: string;
+  icon: React.ComponentType<any>;
+}
+
+interface NavigationGroup {
+  name: string;
+  icon: React.ComponentType<any>;
+  children: NavigationItem[];
+}
+
+type NavigationEntry = NavigationItem | NavigationGroup;
+
+function isNavigationGroup(item: NavigationEntry): item is NavigationGroup {
+  return 'children' in item;
+}
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -10,11 +29,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const navigation = [
+  const navigation: NavigationEntry[] = [
     { name: 'Dashboard', href: '/dashboard', icon: Home },
     ...(isAdmin() ? [
-      { name: 'Workers', href: '/admin/workers', icon: Users },
-      { name: 'Teams & Departments', href: '/admin/teams', icon: Briefcase },
+      {
+        name: 'People & Organization',
+        icon: Users,
+        children: [
+          { name: 'Workers', href: '/admin/workers', icon: Users },
+          { name: 'Teams & Departments', href: '/admin/teams', icon: Briefcase },
+        ]
+      } as NavigationGroup,
       { name: 'Habit Management', href: '/admin/habit-management', icon: Settings },
     ] : []),
     { name: 'Devotionals', href: '/devotionals', icon: Book },
@@ -52,6 +77,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     setSidebarOpen(false);
   };
 
+  // Check if any child route is active for grouped navigation
+  const isGroupActive = (group: NavigationGroup) => {
+    return group.children.some(child => location.pathname === child.href);
+  };
+
+  // Check if a single navigation item is active
+  const isItemActive = (href: string) => {
+    return location.pathname === href;
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 no-horizontal-scroll">
       {/* Desktop Header Navigation */}
@@ -66,24 +101,84 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {/* Desktop Navigation - Responsive spacing */}
             <nav className="flex items-center space-x-1 lg:space-x-2 xl:space-x-3 flex-no-overflow">
               {navigation.map((item) => {
-                const isActive = location.pathname === item.href;
-                return (
-                  <button
-                    key={item.name}
-                    onClick={() => handleNavigate(item.href)}
-                    className={`
-                      flex items-center px-3 py-2 lg:px-4 lg:py-3 xl:px-6 xl:py-3 text-xs lg:text-sm font-medium rounded-lg lg:rounded-xl transition-all duration-200 whitespace-nowrap
-                      ${isActive 
-                        ? 'bg-harvesters-50 text-harvesters-700 border border-harvesters-200 shadow-sm' 
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 hover:shadow-sm'
-                      }
-                    `}
-                    aria-current={isActive ? 'page' : undefined}
-                  >
-                    <item.icon className={`mr-2 lg:mr-3 h-3 w-3 lg:h-4 lg:w-4 flex-shrink-0 ${isActive ? 'text-harvesters-700' : 'text-gray-400'}`} />
-                    <span className="truncate">{item.name}</span>
-                  </button>
-                );
+                if (isNavigationGroup(item)) {
+                  const isActive = isGroupActive(item);
+                  return (
+                    <MenuComponent key={item.name} as="div" className="relative">
+                      <MenuComponent.Button
+                        className={`
+                          flex items-center px-3 py-2 lg:px-4 lg:py-3 xl:px-6 xl:py-3 text-xs lg:text-sm font-medium rounded-lg lg:rounded-xl transition-all duration-200 whitespace-nowrap
+                          ${isActive 
+                            ? 'bg-harvesters-50 text-harvesters-700 border border-harvesters-200 shadow-sm' 
+                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 hover:shadow-sm'
+                          }
+                        `}
+                        aria-current={isActive ? 'page' : undefined}
+                      >
+                        <item.icon className={`mr-2 lg:mr-3 h-3 w-3 lg:h-4 lg:w-4 flex-shrink-0 ${isActive ? 'text-harvesters-700' : 'text-gray-400'}`} />
+                        <span className="truncate">{item.name}</span>
+                        <ChevronDown className={`ml-1 lg:ml-2 h-3 w-3 lg:h-4 lg:w-4 flex-shrink-0 ${isActive ? 'text-harvesters-700' : 'text-gray-400'}`} />
+                      </MenuComponent.Button>
+
+                      <Transition
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <MenuComponent.Items className="absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-xl lg:rounded-2xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none border border-gray-200">
+                          <div className="py-2">
+                            {item.children.map((child) => {
+                              const isChildActive = isItemActive(child.href);
+                              return (
+                                <MenuComponent.Item key={child.name}>
+                                  {({ active }) => (
+                                    <button
+                                      onClick={() => handleNavigate(child.href)}
+                                      className={`
+                                        flex items-center w-full px-4 py-3 text-sm font-medium transition-all duration-200
+                                        ${isChildActive
+                                          ? 'bg-harvesters-50 text-harvesters-700 border-r-2 border-harvesters-700'
+                                          : active
+                                          ? 'bg-gray-50 text-gray-900'
+                                          : 'text-gray-600'
+                                        }
+                                      `}
+                                    >
+                                      <child.icon className={`mr-3 h-4 w-4 flex-shrink-0 ${isChildActive ? 'text-harvesters-700' : 'text-gray-400'}`} />
+                                      <span className="truncate">{child.name}</span>
+                                    </button>
+                                  )}
+                                </MenuComponent.Item>
+                              );
+                            })}
+                          </div>
+                        </MenuComponent.Items>
+                      </Transition>
+                    </MenuComponent>
+                  );
+                } else {
+                  const isActive = isItemActive(item.href);
+                  return (
+                    <button
+                      key={item.name}
+                      onClick={() => handleNavigate(item.href)}
+                      className={`
+                        flex items-center px-3 py-2 lg:px-4 lg:py-3 xl:px-6 xl:py-3 text-xs lg:text-sm font-medium rounded-lg lg:rounded-xl transition-all duration-200 whitespace-nowrap
+                        ${isActive 
+                          ? 'bg-harvesters-50 text-harvesters-700 border border-harvesters-200 shadow-sm' 
+                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 hover:shadow-sm'
+                        }
+                      `}
+                      aria-current={isActive ? 'page' : undefined}
+                    >
+                      <item.icon className={`mr-2 lg:mr-3 h-3 w-3 lg:h-4 lg:w-4 flex-shrink-0 ${isActive ? 'text-harvesters-700' : 'text-gray-400'}`} />
+                      <span className="truncate">{item.name}</span>
+                    </button>
+                  );
+                }
               })}
             </nav>
 
@@ -174,24 +269,77 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {/* Mobile Navigation */}
           <nav className="flex-1 px-4 sm:px-6 py-6 lg:py-8 space-y-2 lg:space-y-3 overflow-y-auto">
             {navigation.map((item) => {
-              const isActive = location.pathname === item.href;
-              return (
-                <button
-                  key={item.name}
-                  onClick={() => handleNavigate(item.href)}
-                  className={`
-                    flex items-center w-full px-4 sm:px-6 py-3 lg:py-4 text-sm font-medium rounded-lg lg:rounded-xl transition-all duration-200
-                    ${isActive 
-                      ? 'bg-harvesters-50 text-harvesters-700 border-r-2 border-harvesters-700' 
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                    }
-                  `}
-                  aria-current={isActive ? 'page' : undefined}
-                >
-                  <item.icon className={`mr-3 lg:mr-4 h-5 w-5 flex-shrink-0 ${isActive ? 'text-harvesters-700' : 'text-gray-400'}`} />
-                  <span className="truncate">{item.name}</span>
-                </button>
-              );
+              if (isNavigationGroup(item)) {
+                const isActive = isGroupActive(item);
+                return (
+                  <Disclosure key={item.name} defaultOpen={isActive}>
+                    {({ open }) => (
+                      <>
+                        <Disclosure.Button
+                          className={`
+                            flex items-center justify-between w-full px-4 sm:px-6 py-3 lg:py-4 text-sm font-medium rounded-lg lg:rounded-xl transition-all duration-200
+                            ${isActive 
+                              ? 'bg-harvesters-50 text-harvesters-700 border-r-2 border-harvesters-700' 
+                              : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                            }
+                          `}
+                        >
+                          <div className="flex items-center space-x-3 lg:space-x-4">
+                            <item.icon className={`h-5 w-5 flex-shrink-0 ${isActive ? 'text-harvesters-700' : 'text-gray-400'}`} />
+                            <span className="truncate">{item.name}</span>
+                          </div>
+                          <ChevronRight
+                            className={`h-4 w-4 flex-shrink-0 transition-transform duration-200 ${
+                              open ? 'rotate-90' : ''
+                            } ${isActive ? 'text-harvesters-700' : 'text-gray-400'}`}
+                          />
+                        </Disclosure.Button>
+                        <Disclosure.Panel className="mt-2 space-y-1">
+                          {item.children.map((child) => {
+                            const isChildActive = isItemActive(child.href);
+                            return (
+                              <button
+                                key={child.name}
+                                onClick={() => handleNavigate(child.href)}
+                                className={`
+                                  flex items-center w-full pl-12 pr-4 sm:pr-6 py-2 lg:py-3 text-sm font-medium rounded-lg lg:rounded-xl transition-all duration-200
+                                  ${isChildActive 
+                                    ? 'bg-harvesters-100 text-harvesters-700 border-r-2 border-harvesters-700' 
+                                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                                  }
+                                `}
+                                aria-current={isChildActive ? 'page' : undefined}
+                              >
+                                <child.icon className={`mr-3 lg:mr-4 h-4 w-4 flex-shrink-0 ${isChildActive ? 'text-harvesters-700' : 'text-gray-400'}`} />
+                                <span className="truncate">{child.name}</span>
+                              </button>
+                            );
+                          })}
+                        </Disclosure.Panel>
+                      </>
+                    )}
+                  </Disclosure>
+                );
+              } else {
+                const isActive = isItemActive(item.href);
+                return (
+                  <button
+                    key={item.name}
+                    onClick={() => handleNavigate(item.href)}
+                    className={`
+                      flex items-center w-full px-4 sm:px-6 py-3 lg:py-4 text-sm font-medium rounded-lg lg:rounded-xl transition-all duration-200
+                      ${isActive 
+                        ? 'bg-harvesters-50 text-harvesters-700 border-r-2 border-harvesters-700' 
+                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      }
+                    `}
+                    aria-current={isActive ? 'page' : undefined}
+                  >
+                    <item.icon className={`mr-3 lg:mr-4 h-5 w-5 flex-shrink-0 ${isActive ? 'text-harvesters-700' : 'text-gray-400'}`} />
+                    <span className="truncate">{item.name}</span>
+                  </button>
+                );
+              }
             })}
           </nav>
 
