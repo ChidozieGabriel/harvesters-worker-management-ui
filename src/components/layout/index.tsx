@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth';
-import { Menu, X, Home, Users, Briefcase, Building2, Book, User, LogOut, Settings } from 'lucide-react';
+import { Menu, X, Home, Users, Briefcase, Book, User, LogOut, Settings } from 'lucide-react';
 import Logo from '../ui/Logo';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -14,8 +14,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { name: 'Dashboard', href: '/dashboard', icon: Home },
     ...(isAdmin() ? [
       { name: 'Workers', href: '/admin/workers', icon: Users },
-      { name: 'Teams', href: '/admin/teams', icon: Briefcase },
-      { name: 'Departments', href: '/admin/departments', icon: Building2 },
+      { name: 'Teams & Departments', href: '/admin/teams', icon: Briefcase },
       { name: 'Habit Management', href: '/admin/habit-management', icon: Settings },
     ] : []),
     { name: 'Devotionals', href: '/devotionals', icon: Book },

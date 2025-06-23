@@ -4,8 +4,7 @@ import Login from './pages/auth/login';
 import Dashboard from './pages/dashboard';
 import AdminDashboard from './pages/admin/dashboard';
 import Workers from './pages/admin/workers';
-import Teams from './pages/admin/teams';
-import Departments from './pages/admin/departments';
+import TeamsAndDepartments from './pages/admin/teams';
 import HabitsManagement from './pages/habits';
 import Devotionals from './pages/devotionals';
 import Profile from './pages/profile';
@@ -50,13 +49,7 @@ export default function AppRoutes() {
 
       <Route path="/admin/teams" element={
         <PrivateRoute adminOnly>
-          <Teams />
-        </PrivateRoute>
-      } />
-
-      <Route path="/admin/departments" element={
-        <PrivateRoute adminOnly>
-          <Departments />
+          <TeamsAndDepartments />
         </PrivateRoute>
       } />
 
