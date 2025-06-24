@@ -33,14 +33,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { name: 'Dashboard', href: '/dashboard', icon: Home },
     ...(isAdmin() ? [
       {
-        name: 'People & Organization',
+        name: 'Admin Hub',
         icon: Users,
         children: [
+          { name: 'Overview', href: '/admin', icon: Home },
           { name: 'Workers', href: '/admin/workers', icon: Users },
           { name: 'Teams & Departments', href: '/admin/teams', icon: Briefcase },
+          { name: 'Habit Management', href: '/admin/habit-management', icon: Settings },
         ]
       } as NavigationGroup,
-      { name: 'Habit Management', href: '/admin/habit-management', icon: Settings },
     ] : []),
     { name: 'Devotionals', href: '/devotionals', icon: Book },
     { name: 'Profile', href: '/profile', icon: User },
@@ -90,7 +91,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-gray-50 no-horizontal-scroll">
       {/* Desktop Header Navigation */}
-      <header className="hidden lg:block bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40 no-horizontal-scroll">
+      <header className="hidden lg:block bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
         <div className="container-responsive">
           <div className="flex justify-between items-center h-16 lg:h-20 xl:h-24">
             {/* Logo and Brand */}
