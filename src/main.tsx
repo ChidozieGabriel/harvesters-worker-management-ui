@@ -5,7 +5,7 @@ import './index.css';
 
 // Conditionally enable mocking in development
 async function prepare() {
-  if (!!import.meta.env.VITE_ENABLE_MOCKING) {
+  if (import.meta.env.VITE_ENABLE_MOCKING === 'true') {
     const { enableMocking } = await import('./mocks');
     return enableMocking();
   }

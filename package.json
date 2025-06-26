@@ -6,12 +6,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:mock": "vite --mode development-mock",
     "build": "vite build",
     "build:github": "vite build --mode github",
+    "build:github-mock": "vite build --mode github-mock",
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy:github": "npm run build:github && cp dist/index.html dist/404.html",
-    "deploy:github": "gh-pages -d dist"
+    "predeploy:github-mock": "npm run build:github-mock && cp dist/index.html dist/404.html",
+    "deploy:github": "gh-pages -d dist",
+    "deploy:github-mock": "gh-pages -d dist"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",

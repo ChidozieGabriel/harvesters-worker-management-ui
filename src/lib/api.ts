@@ -21,15 +21,7 @@ api.interceptors.request.use((config) => {
 
 const invalidateToken = () => {
   localStorage.removeItem('token');
-  
-  // Use navigation service instead of window.location
-  if (navigationService.isInitialized()) {
-    navigationService.handleAuthenticationError();
-  } else {
-    // Fallback only if navigation service isn't ready yet
-    console.warn('⚠️ Navigation service not ready, using fallback redirect');
-    window.location.href = '/login';
-  }
+  navigationService.handleAuthenticationError();
 }
 
 // Handle auth errors
