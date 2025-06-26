@@ -2,6 +2,7 @@ import { jwtDecode } from 'jwt-decode';
 import { create } from 'zustand';
 import { User } from '../services/types';
 import { UserRole } from '../types/api';
+import navigationService from '../services/navigation';
 
 interface AuthState {
   token: string | null;
@@ -73,6 +74,11 @@ export const useAuthStore = create<AuthState>((set, get) => {
     logout: () => {
       localStorage.removeItem('token');
       set({ token: null, user: null });
+      
+      // Use navigation service for logout redirect
+      if (navigationService.isInitialized()) {
+        navigationService.handleLogout();
+      }
     },
     isAuthenticated: () => {
       return !!get().token;

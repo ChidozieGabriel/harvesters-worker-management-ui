@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAuthStore } from '../../store/auth';
 import { workerLogin, forgotPassword, verifyToken, resetPassword } from '../../services';
 import { ArrowLeft, Mail, Key, CheckCircle, Eye, EyeOff } from 'lucide-react';
 import Logo from '../../components/ui/Logo';
+import navigationService from '../../services/navigation';
 
 interface LoginForm {
   email: string;
@@ -32,7 +33,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const navigate = useNavigate();
+  const location = useLocation();
   const { setToken } = useAuthStore();
   
   const { register: registerLogin, handleSubmit: handleSubmitLogin, formState: { errors: loginErrors } } = useForm<LoginForm>();
@@ -51,7 +52,10 @@ export default function Login() {
         password: data.password
       });
       setToken(response.token);
-      navigate('/dashboard');
+      
+      // Use navigation service for login success redirect
+      const returnUrl = location.state?.returnUrl;
+      navigationService.handleLoginSuccess(returnUrl);
     } catch (err) {
       setError('Invalid email or password');
     } finally {

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import navigationService from '../services/navigation';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -20,11 +21,16 @@ api.interceptors.request.use((config) => {
 
 const invalidateToken = () => {
   localStorage.removeItem('token');
-  if (window.location.pathname !== '/login') {
+  
+  // Use navigation service instead of window.location
+  if (navigationService.isInitialized()) {
+    navigationService.handleAuthenticationError();
+  } else {
+    // Fallback only if navigation service isn't ready yet
+    console.warn('⚠️ Navigation service not ready, using fallback redirect');
     window.location.href = '/login';
   }
 }
-
 
 // Handle auth errors
 api.interceptors.response.use(

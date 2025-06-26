@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Menu as MenuComponent, Disclosure, Transition } from '@headlessui/react';
 import { useAuthStore } from '../../store/auth';
 import { Menu, X, Home, Users, Briefcase, Book, User, LogOut, Settings, ChevronDown, ChevronRight } from 'lucide-react';
 import Logo from '../ui/Logo';
+import navigationService from '../../services/navigation';
 
 interface NavigationItem {
   name: string;
@@ -26,7 +27,6 @@ function isNavigationGroup(item: NavigationEntry): item is NavigationGroup {
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { isAdmin, logout, user } = useAuthStore();
-  const navigate = useNavigate();
   const location = useLocation();
 
   const navigation: NavigationEntry[] = [
@@ -66,11 +66,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    // Navigation is handled by the auth store using navigationService
   };
 
   const handleNavigate = (href: string) => {
-    navigate(href);
+    navigationService.navigateTo(href);
     setSidebarOpen(false);
   };
 
