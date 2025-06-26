@@ -35,7 +35,7 @@ interface PasswordChangeForm {
 const roleConfig = {
   [UserRole.Admin]: {
     label: 'Administrator',
-    description: 'Full system access and management capabilities',
+    description: 'Full management capabilities',
     color: 'bg-red-500',
     textColor: 'text-red-700',
     bgColor: 'bg-red-50',
@@ -44,7 +44,7 @@ const roleConfig = {
   },
   [UserRole.Worker]: {
     label: 'Church Worker',
-    description: 'Active church worker with attendance tracking',
+    description: 'Active church worker',
     color: 'bg-blue-500',
     textColor: 'text-blue-700',
     bgColor: 'bg-blue-50',
@@ -202,19 +202,6 @@ export default function Profile() {
                       Primary contact and login email
                     </p>
                   </div>
-
-                  <div className="bg-gray-50 rounded-xl lg:rounded-2xl p-4 lg:p-6">
-                    <div className="flex items-center justify-between mb-2">
-                      <label className="text-sm font-semibold text-gray-700">Phone Number</label>
-                      <Phone className="w-4 h-4 text-gray-400" />
-                    </div>
-                    <p className="text-sm text-gray-500 italic">
-                      Not provided
-                    </p>
-                    <p className="text-xs text-gray-500 mt-2">
-                      Contact administrator to update
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>
@@ -237,33 +224,7 @@ export default function Profile() {
                       {user.departmentName}
                     </p>
                     <p className="text-xs lg:text-sm text-gray-600 mt-2">
-                      Your assigned ministry department
-                    </p>
-                  </div>
-
-                  <div className="bg-harvesters-50 rounded-xl lg:rounded-2xl p-4 lg:p-6">
-                    <div className="flex items-center justify-between mb-2">
-                      <label className="text-sm font-semibold text-gray-700">Member Since</label>
-                      <Calendar className="w-4 h-4 text-harvesters-600" />
-                    </div>
-                    <p className="text-base lg:text-lg text-gray-900 font-medium">
-                      January 2024
-                    </p>
-                    <p className="text-xs lg:text-sm text-gray-600 mt-2">
-                      Account creation date
-                    </p>
-                  </div>
-
-                  <div className="bg-harvesters-50 rounded-xl lg:rounded-2xl p-4 lg:p-6">
-                    <div className="flex items-center justify-between mb-2">
-                      <label className="text-sm font-semibold text-gray-700">Location</label>
-                      <MapPin className="w-4 h-4 text-harvesters-600" />
-                    </div>
-                    <p className="text-base lg:text-lg text-gray-900 font-medium">
-                      Harvesters London Campus
-                    </p>
-                    <p className="text-xs lg:text-sm text-gray-600 mt-2">
-                      Primary church location
+                      Your assigned department
                     </p>
                   </div>
                 </div>
@@ -305,57 +266,7 @@ export default function Profile() {
 
         <div className="card-padding">
           {!isChangingPassword ? (
-            <div className="space-y-6 lg:space-y-8">
-              {/* Password Status */}
-              <div className="bg-green-50 rounded-xl lg:rounded-2xl p-4 lg:p-6 border border-green-200">
-                <div className="flex items-center space-x-3 lg:space-x-4">
-                  <div className="bg-green-500 p-2 lg:p-3 rounded-lg lg:rounded-xl text-white">
-                    <Lock className="w-5 h-5 lg:w-6 lg:h-6" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="text-base lg:text-lg font-semibold text-green-900 mb-1">
-                      Password Protected
-                    </h4>
-                    <p className="text-sm text-green-700">
-                      Your account is secured with a strong password. Last updated recently.
-                    </p>
-                  </div>
-                  <Check className="w-6 h-6 lg:w-7 lg:h-7 text-green-600" />
-                </div>
-              </div>
-
-              {/* Security Tips */}
-              <div className="bg-harvesters-50 rounded-xl lg:rounded-2xl p-4 lg:p-6">
-                <h4 className="text-base lg:text-lg font-semibold text-gray-900 mb-4 lg:mb-6">
-                  Security Best Practices
-                </h4>
-                <div className="space-y-3 lg:space-y-4">
-                  <div className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-harvesters-500 rounded-full mt-2 flex-shrink-0"></div>
-                    <p className="text-sm text-gray-700">
-                      Use a strong, unique password that you don't use elsewhere
-                    </p>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-harvesters-500 rounded-full mt-2 flex-shrink-0"></div>
-                    <p className="text-sm text-gray-700">
-                      Change your password regularly, especially if you suspect it's been compromised
-                    </p>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-harvesters-500 rounded-full mt-2 flex-shrink-0"></div>
-                    <p className="text-sm text-gray-700">
-                      Never share your login credentials with others
-                    </p>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-harvesters-500 rounded-full mt-2 flex-shrink-0"></div>
-                    <p className="text-sm text-gray-700">
-                      Log out from shared or public computers after use
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <div>
             </div>
           ) : (
             <form onSubmit={handleSubmit(onSubmitPasswordChange)} className="form-spacing">
@@ -424,11 +335,7 @@ export default function Profile() {
                     placeholder="Enter your new password"
                     {...register('newPassword', { 
                       required: 'New password is required',
-                      minLength: { value: 8, message: 'New password must be at least 8 characters' },
-                      pattern: {
-                        value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-                        message: 'Password must contain at least one uppercase letter, one lowercase letter, and one number'
-                      }
+                      minLength: { value: 6, message: 'New password must be at least 6 characters' }
                     })}
                   />
                   <button
@@ -512,43 +419,6 @@ export default function Profile() {
               </div>
             </form>
           )}
-        </div>
-      </div>
-
-      {/* Account Information Notice */}
-      <div className="bg-gradient-to-br from-harvesters-50 via-white to-harvesters-100 rounded-2xl lg:rounded-3xl shadow-lg border border-harvesters-200 overflow-hidden">
-        <div className="card-padding">
-          <div className="flex items-center space-x-4 lg:space-x-6 mb-4 lg:mb-6">
-            <div className="bg-harvesters-600 p-3 lg:p-4 rounded-xl lg:rounded-2xl text-white">
-              <Edit2 className="w-6 h-6 lg:w-7 lg:h-7" />
-            </div>
-            <div>
-              <h2 className="text-xl lg:text-2xl font-bold text-gray-900">
-                Need to Update Your Information?
-              </h2>
-              <p className="text-sm text-harvesters-600 mt-1">
-                Contact your church administrator for profile updates
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl lg:rounded-2xl p-4 lg:p-6 shadow-sm border border-harvesters-100">
-            <p className="text-sm lg:text-base text-gray-700 leading-relaxed mb-4 lg:mb-6">
-              To update your personal information, department assignment, or role, please contact your church administrator. 
-              This ensures that all changes are properly authorized and reflected across all church systems.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-3 lg:gap-4">
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <Mail className="w-4 h-4 text-harvesters-600" />
-                <span>admin@harvesterschurch.com</span>
-              </div>
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <Phone className="w-4 h-4 text-harvesters-600" />
-                <span>+44 20 1234 5678</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

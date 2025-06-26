@@ -40,7 +40,7 @@ interface WorkerFormData {
 const roleConfig = {
   [UserRole.Admin]: {
     label: 'Administrator',
-    description: 'Full system access and management',
+    description: 'Full management capabilities',
     color: 'bg-red-500',
     textColor: 'text-red-700',
     bgColor: 'bg-red-50',
@@ -48,7 +48,7 @@ const roleConfig = {
   },
   [UserRole.Worker]: {
     label: 'Worker',
-    description: 'Active church worker with attendance tracking',
+    description: 'Active church worker',
     color: 'bg-blue-500',
     textColor: 'text-blue-700',
     bgColor: 'bg-blue-50',
