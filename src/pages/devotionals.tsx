@@ -75,9 +75,9 @@ export default function Devotionals() {
   });
 
   // Form handlers
-  const onSubmit = (data: DevotionalFormData) => {
-    if (data.file && data.file.length > 0) {
-      uploadDevotionalMutation.mutate(data.file[0]);
+  const onSubmit = () => {
+    if (selectedFile) {
+      uploadDevotionalMutation.mutate(selectedFile);
     }
   };
 
