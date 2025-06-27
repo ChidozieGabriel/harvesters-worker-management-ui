@@ -129,7 +129,7 @@ class NavigationServiceImpl implements NavigationService {
     console.warn('🔒 Authentication error detected, redirecting to login');
     
     // Get current path to use as return URL (excluding login page)
-    const currentPath = window.location.pathname;
+    const currentPath = this.currentPath();
     const returnUrl = currentPath !== '/login' ? currentPath : undefined;
     
     this.navigateToLogin({ replace: true, returnUrl });
@@ -148,6 +148,10 @@ class NavigationServiceImpl implements NavigationService {
   handleLogout(): void {
     console.log('👋 Logout detected, redirecting to login');
     this.navigateToLogin({ replace: true });
+  }
+
+  currentPath(): string {
+    return window.location.pathname.replace(`/${import.meta.env.VITE_BASE_DIR}`, '')
   }
 }
 
