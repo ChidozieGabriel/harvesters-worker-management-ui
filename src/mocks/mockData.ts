@@ -9,7 +9,7 @@ export const mockWorkers: Worker[] = [
     role: UserRole.Admin,
     firstName: 'Admin',
     lastName: 'Example',
-    departmentName: 'Ministry'
+    departmentName: 'Next Generation'
   },
   {
     id: '550e8400-e29b-41d4-a716-446655440001',
@@ -17,7 +17,7 @@ export const mockWorkers: Worker[] = [
     role: UserRole.Worker,
     firstName: 'John',
     lastName: 'Doe',
-    departmentName: 'Worship'
+    departmentName: 'Growth Track'
   },
   {
     id: '550e8400-e29b-41d4-a716-446655440002',
@@ -25,7 +25,7 @@ export const mockWorkers: Worker[] = [
     role: UserRole.Admin,
     firstName: 'Jane',
     lastName: 'Smith',
-    departmentName: 'Administration'
+    departmentName: 'Music'
   },
   {
     id: '550e8400-e29b-41d4-a716-446655440003',
@@ -33,7 +33,7 @@ export const mockWorkers: Worker[] = [
     role: UserRole.Worker,
     firstName: 'Mike',
     lastName: 'Johnson',
-    departmentName: 'Youth Ministry'
+    departmentName: 'Prayer'
   },
   {
     id: '550e8400-e29b-41d4-a716-446655440004',
@@ -41,7 +41,7 @@ export const mockWorkers: Worker[] = [
     role: UserRole.NonWorker,
     firstName: 'Sarah',
     lastName: 'Wilson',
-    departmentName: 'Children Ministry'
+    departmentName: ''
   }
 ];
 
@@ -49,27 +49,27 @@ export const mockWorkers: Worker[] = [
 export const mockDepartments: Department[] = [
   {
     id: '660e8400-e29b-41d4-a716-446655440001',
-    name: 'Worship',
+    name: 'Music',
     description: 'Music and worship services',
-    teamName: 'Creative Arts'
+    teamName: 'Programs'
   },
   {
     id: '660e8400-e29b-41d4-a716-446655440002',
-    name: 'Administration',
-    description: 'Church administration and management',
-    teamName: 'Leadership'
+    name: 'Growth Track',
+    description: 'Preparing new workers',
+    teamName: 'Ministry'
   },
   {
     id: '660e8400-e29b-41d4-a716-446655440003',
-    name: 'Youth Ministry',
-    description: 'Ministry for teenagers and young adults',
-    teamName: 'Pastoral Care'
+    name: 'Prayer',
+    description: 'Prayer, Fire, Oil',
+    teamName: 'Maturity'
   },
   {
     id: '660e8400-e29b-41d4-a716-446655440004',
-    name: 'Children Ministry',
-    description: 'Ministry for children and families',
-    teamName: 'Pastoral Care'
+    name: 'Next Generation',
+    description: 'Ministry for children',
+    teamName: 'Ministry'
   }
 ];
 
@@ -77,20 +77,20 @@ export const mockDepartments: Department[] = [
 export const mockTeams: Team[] = [
   {
     id: '770e8400-e29b-41d4-a716-446655440001',
-    name: 'Creative Arts',
+    name: 'Programs',
     description: 'Music, media, and creative expression',
     departmentCount: 2
   },
   {
     id: '770e8400-e29b-41d4-a716-446655440002',
-    name: 'Leadership',
+    name: 'Ministry',
     description: 'Church leadership and governance',
     departmentCount: 1
   },
   {
     id: '770e8400-e29b-41d4-a716-446655440003',
-    name: 'Pastoral Care',
-    description: 'Spiritual care and ministry',
+    name: 'Maturity',
+    description: 'Spiritual care and training',
     departmentCount: 2
   }
 ];
