@@ -1,2 +1,0 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/browser-BT7RIg5_.js","assets/index-u2WV0dR_.js","assets/index-COYbTd-g.css"])))=>i.map(i=>d[i]);
-import{_ as o}from"./index-u2WV0dR_.js";async function a(){if(typeof window>"u")return;const{worker:e}=await o(async()=>{const{worker:n}=await import("./browser-BT7RIg5_.js");return{worker:n}},__vite__mapDeps([0,1,2])),r={onUnhandledRequest:"warn"};return r.serviceWorker={url:"/harvesters-worker-management-ui/mockServiceWorker.js"},e.start(r)}export{a as enableMocking};
